@@ -1,0 +1,32 @@
+name: Run Plotly Script and Export HTML
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+        
+    - name: Install dependencies
+      run: |
+        pip install plotly pandas
+        
+    - name: Generate HTML
+      run: |
+        python plotly_complex_demo.py
+        
+    - name: Upload HTML as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: plotly-chart
+        path: plotly_chart.html
